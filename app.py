@@ -1,7 +1,7 @@
 import streamlit as st
 import pickle
 import numpy as np
-import pandas as pd
+import os
 
 # ------------------------------
 # 🌐 Page Configuration
@@ -14,13 +14,13 @@ st.set_page_config(
 )
 
 # ------------------------------
-# 🖼️ Header Image from Web
+# 🖼️ Header Image (Banker Advising Clients)
 # ------------------------------
 st.markdown(
     """
     <div style="text-align:center;">
-        <img src="https://img.freepik.com/premium-photo/loan-approval-business-finance-concept-hand-holding-pen-pointing-text-loan-approval_1028938-112752.jpg" 
-        alt="Loan Approval Banner" width="700"/>
+        <img src="https://img.freepik.com/premium-photo/banker-explaining-loan-options-couple-office-professional-advisor-financial-consultant-discussing-mortgage-application-with-clients-finance-business-meeting-banking_590464-220196.jpg" 
+        alt="Banker Advising Loan Clients" width="700"/>
     </div>
     """,
     unsafe_allow_html=True
@@ -32,11 +32,11 @@ st.markdown(
 st.title("🏦 Loan Approval Prediction App")
 st.markdown("""
 ### Predict Loan Approval using Machine Learning  
-This app helps financial institutions and users estimate **loan approval chances** based on applicant information.
+Estimate **loan approval probability** based on applicant details and credit history.
 """)
 
 # ------------------------------
-# 🧾 Sidebar – Contact Info
+# 🧾 Sidebar – Developer Info
 # ------------------------------
 st.sidebar.header("👤 Developer Info")
 st.sidebar.markdown("""
@@ -45,18 +45,23 @@ st.sidebar.markdown("""
 📧 **Email:** [gaikwadpranav988@gmail.com](mailto:gaikwadpranav988@gmail.com)  
 🔗 **GitHub:** [Loan Approval Predictor](https://github.com/pranavgaikwad51/Loan_Approval_Predictor)
 """)
-
 st.sidebar.markdown("---")
 st.sidebar.info("💡 *AI-powered Financial Prediction Tool*")
 
 # ------------------------------
-# 📦 Load the Trained Model
+# 📦 Load the Trained Model (Safe Handling)
 # ------------------------------
-with open("Best_model(1).pkl", "rb") as file:
-    model = pickle.load(file)
+model_path = "Best_model.pkl"
+
+if os.path.exists(model_path):
+    with open(model_path, "rb") as file:
+        model = pickle.load(file)
+else:
+    st.error("❌ Model file not found! Please make sure 'Best_model.pkl' is in the same folder as 'app.py'.")
+    st.stop()
 
 # ------------------------------
-# 📋 User Input Section
+# 📋 Applicant Information
 # ------------------------------
 st.header("📋 Applicant Information")
 
@@ -105,13 +110,13 @@ if st.button("🔍 Predict Loan Approval"):
             st.error("❌ Loan Rejected. Please review applicant details.")
 
     except Exception as e:
-        st.error(f"⚠️ Error: {e}")
+        st.error(f"⚠️ Error during prediction: {e}")
 
 # ------------------------------
-# 📊 Footer Section
+# 📊 Footer
 # ------------------------------
 st.markdown("""
 ---
-💡 **Disclaimer:** This app is for educational and demonstration purposes only.  
+💡 **Disclaimer:** This app is for educational purposes only.  
 Developed by **Pranav Gaikwad** | [GitHub Repository](https://github.com/pranavgaikwad51/Loan_Approval_Predictor)
 """)
